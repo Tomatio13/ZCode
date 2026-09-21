@@ -96,11 +96,19 @@ function isWebOAuthCallback(params: URLSearchParams): boolean {
 }
 
 function renderWebAuthCallbackPage(): void {
-  document.title = "ZCode - Sign In";
   const callbackState = parseOAuthState(
     new URLSearchParams(window.location.search).get("state") ?? "",
   );
   const safeRetryTarget = resolveSafeAppReturnTo(callbackState?.app_return_to);
+  if (safeRetryTarget?.startsWith("/ja/share/")) {
+    document.documentElement.lang = "ja-JP";
+    document.title = "ZCode - サインイン";
+  } else if (safeRetryTarget?.startsWith("/cn/share/")) {
+    document.documentElement.lang = "zh-CN";
+    document.title = "ZCode - 登录";
+  } else {
+    document.title = "ZCode - Sign In";
+  }
   root.render(
     <WebCallbackPage
       authService={webAuthService}
@@ -121,7 +129,12 @@ async function renderConversationSharePage(): Promise<void> {
   document.documentElement.lang = routeLocale;
   // 分享页必须设置 title：否则浏览器标签只显示 index.html 的通用标题。
   // 会话标题要等 preview 加载完，先给一个语言正确的兜底。
-  document.title = routeLocale === "zh-CN" ? "ZCode 会话分享" : "ZCode Conversation Share";
+  document.title =
+    routeLocale === "zh-CN"
+      ? "ZCode 会话分享"
+      : routeLocale === "ja-JP"
+        ? "ZCode 会話共有"
+        : "ZCode Conversation Share";
   const shareCode = resolveConversationShareCodeFromPath(window.location.pathname);
   if (!shareCode) {
     root.render(
@@ -387,16 +400,22 @@ async function resolveWebBootstrap(): Promise<WebBootstrapResult> {
   }
 }
 
+function resolveWebBootstrapCopy(): { title: string; retry: string } {
+  const language = navigator.language.toLowerCase();
+  if (language.startsWith("ja")) return { title: "Webの起動に失敗しました", retry: "再試行" };
+  if (language.startsWith("zh")) return { title: "Web 启动失败", retry: "重试" };
+  return { title: "Web bootstrap failed", retry: "Retry" };
+}
+
 function WebBootstrapErrorScreen({ message }: { message: string }) {
+  const copy = resolveWebBootstrapCopy();
   return (
     <div className="h-dvh min-h-dvh w-screen bg-background text-foreground">
       <div className="mx-auto flex h-full w-full max-w-lg items-center px-4">
         <section className="w-full rounded-xl border border-card-border bg-card p-5">
           <div className="flex items-center gap-3">
             <span className="size-2 rounded-full bg-destructive" />
-            <h1 className="text-ui-xs font-medium">
-              {/^zh\b/i.test(navigator.language) ? "Web 启动失败" : "Web bootstrap failed"}
-            </h1>
+            <h1 className="text-ui-xs font-medium">{copy.title}</h1>
           </div>
           <p className="mt-2 break-all text-ui-xs/relaxed text-foreground-subtle">{message}</p>
           <button
@@ -406,7 +425,7 @@ function WebBootstrapErrorScreen({ message }: { message: string }) {
               window.location.reload();
             }}
           >
-            {/^zh\b/i.test(navigator.language) ? "重试" : "Retry"}
+            {copy.retry}
           </button>
         </section>
       </div>

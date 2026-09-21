@@ -18,11 +18,13 @@ import {
 } from "@/lib/browserEnvironment.js";
 import zhCN from "./locales/zh-CN.js";
 import enUS from "./locales/en-US.js";
+import jaJP from "./locales/ja-JP.js";
 
 /** 语言 → 翻译消息映射 */
 const MESSAGES: Record<Locale, Record<string, string>> = {
   "zh-CN": zhCN,
   "en-US": enUS,
+  "ja-JP": jaJP,
 };
 
 /** 简易 intl 工具：根据 id 查找翻译，支持 {key} 占位符替换 */
@@ -39,7 +41,7 @@ interface LocaleBroadcastPayload {
 }
 
 function isLocale(value: unknown): value is Locale {
-  return value === "zh-CN" || value === "en-US";
+  return value === "zh-CN" || value === "en-US" || value === "ja-JP";
 }
 
 function isLocalePreference(value: unknown): value is LocalePreference {
@@ -115,7 +117,7 @@ function createIntl(locale: Locale): IntlInstance {
   const messages = MESSAGES[locale] ?? MESSAGES[DEFAULT_LOCALE]!;
   return {
     formatMessage({ id }, values) {
-      let msg = messages[id] ?? id;
+      let msg = messages[id] ?? enUS[id] ?? id;
       if (values) {
         for (const [key, val] of Object.entries(values)) {
           msg = msg.replaceAll(`{${key}}`, String(val));
@@ -164,7 +166,9 @@ export function ZCodeIntlProvider({
       return DEFAULT_LOCALE;
     }
 
-    return language.toLowerCase().startsWith("zh") ? "zh-CN" : "en-US";
+    const normalized = language.toLowerCase();
+    if (normalized.startsWith("ja")) return "ja-JP";
+    return normalized.startsWith("zh") ? "zh-CN" : "en-US";
   }, []);
   const resolveSystemLocale = useCallback(async (): Promise<Locale> => {
     const resolvedLocale = await resolveHostSystemLocale?.();

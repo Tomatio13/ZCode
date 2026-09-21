@@ -29,7 +29,7 @@ const SHARE_LOGIN_PROVIDERS: readonly WebOAuthProviderId[] = [
   BIGMODEL_PROVIDER_ID,
 ];
 
-type ConversationShareLandingLocale = "zh-CN" | "en-US";
+type ConversationShareLandingLocale = "zh-CN" | "en-US" | "ja-JP";
 type ConversationShareLandingState =
   | { kind: "loading" }
   | { kind: "login_required" }
@@ -128,6 +128,44 @@ const COPY: Record<ConversationShareLandingLocale, Copy> = {
     artifactCountOther: "{count} 个结果物",
     retryOpen: "再次打开",
   },
+  "ja-JP": {
+    brand: "ZCode 会話共有",
+    loading: "共有された会話を読み込み中",
+    loadingDescription: "共有リンクを確認しています。しばらくお待ちください。",
+    loginTitle: "サインインして共有を表示",
+    loginDescription: "この共有を表示できるか確認するため、サインインしてください。",
+    login: "サインイン",
+    loginWith: { zai: "Z.aiに接続", bigmodel: "BigModelに接続" },
+    loginRegion: { zai: "グローバル", bigmodel: "中国" },
+    expiredTitle: "共有の有効期限が切れました",
+    expiredDescription:
+      "この共有リンクは期限切れです。共有者に新しいリンクの作成を依頼してください。",
+    notFoundTitle: "共有が見つかりません",
+    notFoundDescription:
+      "リンクが無効か、共有が削除されたか、現在のアカウントにアクセス権がありません。",
+    notFoundAccountHint:
+      "Z.ai と BigModel のアカウントデータは共有されません。サインイン先とアカウントを確認してください。",
+    backToHome: "ホームへ戻る",
+    networkTitle: "共有を読み込めません",
+    networkDescription: "ネットワーク接続を確認して、もう一度お試しください。",
+    invalidTitle: "共有内容が無効です",
+    invalidDescription: "共有内容の安全性を確認できませんでした。",
+    outdatedTitle: "ZCodeを更新してください",
+    outdatedDescription:
+      "この共有は新しいバージョンのZCodeで作成されています。更新後に表示してください。",
+    unavailableTitle: "共有を表示できません",
+    unavailableDescription: "このアカウントには表示権限がないか、共有が存在しません。",
+    retry: "再試行",
+    continueInZCode: "ZCodeで続ける",
+    switchToDarkTheme: "ダークテーマに切り替える",
+    switchToLightTheme: "ライトテーマに切り替える",
+    continueHelp:
+      "ZCodeが自動で開かない場合は、アプリをダウンロードするか、もう一度お試しください。",
+    downloadZCode: "ZCodeをダウンロード",
+    artifactCountOne: "成果物 {count} 件",
+    artifactCountOther: "成果物 {count} 件",
+    retryOpen: "もう一度開く",
+  },
   "en-US": {
     brand: "ZCode Conversation Share",
     loading: "Loading shared conversation",
@@ -172,7 +210,9 @@ const COPY: Record<ConversationShareLandingLocale, Copy> = {
 
 function localeOf(locale?: ConversationShareLandingLocale): ConversationShareLandingLocale {
   if (locale) return locale;
-  return /^zh(?:-|$)/iu.test(globalThis.navigator?.language ?? "") ? "zh-CN" : "en-US";
+  const language = globalThis.navigator?.language ?? "";
+  if (/^ja(?:-|$)/iu.test(language)) return "ja-JP";
+  return /^zh(?:-|$)/iu.test(language) ? "zh-CN" : "en-US";
 }
 
 function formatDate(timestamp: number, locale: ConversationShareLandingLocale): string {

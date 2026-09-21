@@ -1,5 +1,6 @@
 import {
   DEFAULT_FEEDBACK_TICKET_FRAMEWORK,
+  type Locale,
   type FeedbackTicketModule,
   type FeedbackTicketSeverity,
   type FeedbackTicketType,
@@ -53,7 +54,7 @@ export async function startSimplifiedFeedbackSubmission({
   ticketSeverity: FeedbackTicketSeverity;
   ticketModule: FeedbackTicketModule;
   modelContext: FeedbackAgentModelContext;
-  locale: "zh-CN" | "en-US";
+  locale: Locale;
   copy: FeedbackSubmissionCopy;
   formatMessage: (descriptor: { id: string }, values?: Record<string, string>) => string;
   onTicketCreated?: (ticketId: string) => void;

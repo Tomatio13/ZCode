@@ -66,6 +66,34 @@ function buildForceUpdatePromptMessages(locale: Locale) {
     };
   }
 
+  if (locale === "ja-JP") {
+    return {
+      checkingTitle: "アップデートを確認中",
+      checkingMessage:
+        "ZCodeがアップデートを確認しています。このウインドウを開いたままにしてください。",
+      downloadingTitle: "アップデートをダウンロード中",
+      downloadingVersionTitle: "アップデート v{version} をダウンロード中",
+      downloadingMessage: "ダウンロード後に自動でインストールします。アプリを閉じないでください。",
+      readyTitle: "アップデートをダウンロードしました",
+      readyMessage: "再起動してアップデートをインストールする準備をしています。",
+      installingTitle: "アップデートをインストール中",
+      installingMessage: "インストールを完了するためZCodeを再起動します。",
+      errorTitle: "自動アップデートに失敗しました",
+      errorMessage: "自動アップデートを再試行するか、手動で更新してください。",
+      devSkippedTitle: "開発環境では自動アップデートできません",
+      devSkippedMessage: "自動アップデートはパッケージ版でのみ利用できます。",
+      confirmCloseTitle: "自動アップデートを実行中",
+      confirmCloseMessage:
+        "閉じると現在のアップデート処理が中断されます。待機を続けるか、終了してください。",
+      confirmCloseButton: "閉じる",
+      continueUpdateButton: "更新を続ける",
+      retryButton: "再試行",
+      checkingButton: "確認中...",
+      downloadingButton: "ダウンロード中...",
+      installingButton: "インストール中...",
+    };
+  }
+
   return {
     checkingTitle: "Checking for updates",
     checkingMessage: "Keep this window open while ZCode checks for updates.",

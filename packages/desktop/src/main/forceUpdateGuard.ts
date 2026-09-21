@@ -204,6 +204,17 @@ function formatForceUpdateDialogText(
     };
   }
 
+  if (locale === "ja-JP") {
+    return {
+      title: "ZCodeのアップデートが必要です",
+      message: "現在のバージョンは使用できません",
+      detail: `現在のバージョン：v${requirement.currentVersion}\n対応する最小バージョン：v${requirement.minimalVersion}`,
+      autoUpdateButton: "自動アップデート",
+      manualUpdateButton: "手動アップデート",
+      quitButton: "終了",
+    };
+  }
+
   return {
     title: "Update ZCode",
     message: "The current version can no longer be used",
