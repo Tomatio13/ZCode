@@ -74,6 +74,13 @@ const ABOUT_MESSAGES: Record<
     optimizedForAppleSilicon: "已针对 Apple Silicon 优化。",
     copyright: (year) => `版权所有 © ${year} ZCode。`,
   },
+  "ja-JP": {
+    aboutTitle: "ZCodeについて",
+    versionLabel: "バージョン",
+    okButtonLabel: "OK",
+    optimizedForAppleSilicon: "Apple Silicon向けに最適化されています。",
+    copyright: (year) => `Copyright © ${year} ZCode.`,
+  },
   "en-US": {
     aboutTitle: "About ZCode",
     versionLabel: "version",

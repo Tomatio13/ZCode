@@ -44,5 +44,6 @@ export async function resolveWebCommunityUrl(
   locale: Locale,
   options: ResolveWebCommunityUrlOptions = {},
 ): Promise<string | undefined> {
-  return (await resolveWebHelpConfig(options)).community_urls?.[locale];
+  const supportedLocale = locale === "zh-CN" ? "zh-CN" : "en-US";
+  return (await resolveWebHelpConfig(options)).community_urls?.[supportedLocale];
 }

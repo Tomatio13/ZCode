@@ -90,8 +90,8 @@ export function CodingPlanEmbeddedWebviewDialog({
   const webviewRef = useRef<ElectronWebviewTag | null>(null);
   const onOpenResultRef = useRef(onOpenResult);
   onOpenResultRef.current = onOpenResult;
-  // 当前 locale 作为 webview 语言 hint / 注入值；Locale 与 CodingPlanWebviewLocale 同构。
-  const webviewLocale = locale;
+  // 官网 Coding Plan 只支持中英文；日文界面必须显式回退英文，不能把 ja-JP 传给二语言契约。
+  const webviewLocale = locale === "zh-CN" ? "zh-CN" : "en-US";
   const webviewCleanupRef = useRef<(() => void) | null>(null);
   // webview 是否已 dom-ready：executeJavaScript 只在 ready 后调用，
   // 否则会抛 "WebView must be attached to the DOM and dom-ready emitted"。

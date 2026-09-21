@@ -150,6 +150,16 @@ export function resolveExternalWorkspaceOpenDialogCopy(
     };
   }
 
+  if (locale === "ja-JP") {
+    return {
+      buttons: ["フォルダーを開く", "キャンセル"],
+      title: "外部のZCodeリンクを開きますか？",
+      message: "このフォルダーをZCodeで開きますか？",
+      detail: (path) =>
+        `${path}\n\n信頼できる提供元のフォルダーだけを開いてください。プロジェクト設定がAgent runtimeに影響する場合があります。`,
+    };
+  }
+
   return {
     buttons: ["Open folder", "Cancel"],
     title: "Open external ZCode link?",

@@ -10,6 +10,8 @@ export function resolveConversationShareCodeFromPath(pathname: string): string |
  */
 export function isConversationSharePath(pathname: string): boolean {
   return (
+    pathname === "/ja/share" ||
+    pathname.startsWith("/ja/share/") ||
     pathname === "/cn/share" ||
     pathname.startsWith("/cn/share/") ||
     pathname === "/share" ||

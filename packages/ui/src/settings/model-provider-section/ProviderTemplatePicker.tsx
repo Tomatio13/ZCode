@@ -107,7 +107,12 @@ export function ProviderTemplatePicker({
                 />
               ) : null}
               {group.templates.map((template) => {
-                const label = resolveProviderTemplateName(template.templateId, template, locale);
+                const label = resolveProviderTemplateName(
+                  template.templateId,
+                  template,
+                  // Provider 元数据目前只有中英文；日文界面使用英文显示名。
+                  locale === "zh-CN" ? "zh-CN" : "en-US",
+                );
                 return (
                   <ProviderTemplateCard
                     key={template.templateId}

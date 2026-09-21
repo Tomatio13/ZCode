@@ -3,8 +3,16 @@ import test from "node:test";
 import {
   appSettingsSchema,
   appSettingsPatchSchema,
+  localeSchema,
 } from "../../shared/src/validationAppSettings.js";
 import { zcodeTaskMetaSchema } from "../../shared/src/validation.js";
+import {
+  localizeConversationShareUrl,
+  parseConversationSharePathname,
+} from "../../shared/src/conversation-share.js";
+import enUS from "../src/i18n/locales/en-US.js";
+import jaJP from "../src/i18n/locales/ja-JP.js";
+import zhCN from "../src/i18n/locales/zh-CN.js";
 import { readAskUserQuestionAnswers } from "../src/lib/askUserQuestion.js";
 import {
   getAgentPrimaryText,
@@ -24,6 +32,33 @@ const meta = {
   mode: "build",
   provider: "glm",
 };
+
+function placeholders(value: string): string[] {
+  return [...value.matchAll(/\{([A-Za-z0-9_]+)\}/g)].map((match) => match[1]!).sort();
+}
+
+test("Japanese is a supported application and share locale", () => {
+  assert.equal(localeSchema.parse("ja-JP"), "ja-JP");
+  assert.equal(appSettingsSchema.parse({ localePreference: "ja-JP" }).localePreference, "ja-JP");
+  assert.deepEqual(parseConversationSharePathname("/ja/share/example"), {
+    rawCode: "example",
+    locale: "ja-JP",
+  });
+  assert.equal(
+    localizeConversationShareUrl("https://zcode.z.ai/cn/share/example", "ja-JP"),
+    "https://zcode.z.ai/ja/share/example",
+  );
+});
+
+test("all GUI dictionaries expose the same keys and placeholders", () => {
+  const expectedKeys = Object.keys(enUS).sort();
+  for (const messages of [zhCN, jaJP]) {
+    assert.deepEqual(Object.keys(messages).sort(), expectedKeys);
+    for (const key of expectedKeys) {
+      assert.deepEqual(placeholders(messages[key]!), placeholders(enUS[key]!), key);
+    }
+  }
+});
 
 test("current task metadata is accepted without upgrading third-party Agent identities", () => {
   assert.equal(zcodeTaskMetaSchema.parse(meta).provider, "glm");

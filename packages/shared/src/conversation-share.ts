@@ -14,9 +14,10 @@ import {
 const CONVERSATION_SHARE_LOCALE_PATH_PREFIX: Readonly<Record<Locale, string>> = {
   "zh-CN": "/cn",
   "en-US": "",
+  "ja-JP": "/ja",
 };
 
-const CONVERSATION_SHARE_PATHNAME_RE = /^\/(cn\/)?share\/([^/]+)\/?$/u;
+const CONVERSATION_SHARE_PATHNAME_RE = /^\/(?:(cn|ja)\/)?share\/([^/]+)\/?$/u;
 
 /**
  * 解析分享页 pathname，返回未解码的 code 段与该路径对应的语言。
@@ -27,7 +28,10 @@ export function parseConversationSharePathname(
 ): { rawCode: string; locale: Locale } | null {
   const match = CONVERSATION_SHARE_PATHNAME_RE.exec(pathname);
   if (!match) return null;
-  return { rawCode: match[2]!, locale: match[1] ? "zh-CN" : "en-US" };
+  return {
+    rawCode: match[2]!,
+    locale: match[1] === "cn" ? "zh-CN" : match[1] === "ja" ? "ja-JP" : "en-US",
+  };
 }
 
 /**

@@ -22,6 +22,15 @@ const MESSAGES: Record<
     accessibility: "辅助功能",
     screen_recording: "屏幕录制",
   },
+  "ja-JP": {
+    documentTitle: "ZCode Computer Useの権限",
+    dragTitle: "上の権限一覧へドラッグしてください",
+    hintPrefix: "左側のアイコンを上の",
+    hintSuffix: "一覧へドラッグします",
+    completion: "ドロップすると権限が付与されます。スイッチ操作は不要です",
+    accessibility: "アクセシビリティ",
+    screen_recording: "画面収録",
+  },
   "en-US": {
     documentTitle: "ZCode Computer Use Permissions",
     dragTitle: "Drag me to the permission list above",

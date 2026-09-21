@@ -626,7 +626,7 @@ function normalizeLocalizedReleaseNotes(
     return undefined;
   }
 
-  for (const locale of ["zh-CN", "en-US"] as const) {
+  for (const locale of ["zh-CN", "en-US", "ja-JP"] as const) {
     const entry = releaseNotesByLocale[locale];
     if (!entry) {
       continue;

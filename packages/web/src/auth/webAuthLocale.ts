@@ -1,4 +1,4 @@
-type WebAuthLocale = "zh-CN" | "en-US";
+type WebAuthLocale = "zh-CN" | "en-US" | "ja-JP";
 
 interface WebAuthPageCopy {
   brand: string;
@@ -32,6 +32,22 @@ const WEB_AUTH_COPY = {
     signedInAs: "当前账号",
     logoutAction: "断开连接",
   },
+  "ja-JP": {
+    brand: "ZCode",
+    loginTitle: "サインインして続行",
+    loginDescription:
+      "デスクトップ版と同じ Z.AI アカウントで Web リモートコントロールを利用します。",
+    loginAction: "Z.AIでサインイン",
+    callbackTitle: "サインインを完了しています",
+    callbackDescription: "アカウントを確認しています。しばらくお待ちください。",
+    callbackErrorTitle: "サインインに失敗しました",
+    callbackErrorDescription: "認証を完了できませんでした。もう一度サインインしてください。",
+    retryAction: "もう一度サインイン",
+    waitingTitle: "サインイン済み",
+    waitingDescription: "リモート操作するデバイスがまだ選択されていません。",
+    signedInAs: "サインイン中",
+    logoutAction: "接続を解除",
+  },
   "en-US": {
     brand: "ZCode",
     loginTitle: "Sign In To Continue",
@@ -58,7 +74,9 @@ function resolveWebAuthLocale(language?: string): WebAuthLocale {
     navigator.languages?.[0] ??
     "";
 
-  return candidate.toLowerCase().startsWith("zh") ? "zh-CN" : "en-US";
+  const normalized = candidate.toLowerCase();
+  if (normalized.startsWith("ja")) return "ja-JP";
+  return normalized.startsWith("zh") ? "zh-CN" : "en-US";
 }
 
 export function getWebAuthCopy(locale: WebAuthLocale = resolveWebAuthLocale()): WebAuthPageCopy {
